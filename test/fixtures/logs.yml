@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  date: 2009-02-09
+  weight: 1.5
+  trend: 1.5
+
+two:
+  date: 2009-02-09
+  weight: 1.5
+  trend: 1.5
