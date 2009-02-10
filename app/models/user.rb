@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
   attr_accessor :password
 
-  has_one	:target, :dependent => :destroy
+  has_one	:target, :dependent => :destroy 
   has_many	:logs
 
   validates_presence_of     :login, :email
