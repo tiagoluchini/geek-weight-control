@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 3..100
   validates_uniqueness_of   :login, :email, :case_sensitive => false
   
-  validates_associated      :target, :logs
+  #validates_associated      :target, :logs
   
   before_save :encrypt_password
 
