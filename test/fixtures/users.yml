@@ -15,3 +15,9 @@ aaron:
   crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
   # activation_code: aaronscode # only if you're activating new signups
   created_at: <%= 1.days.ago.to_s :db %>
+tiago:
+  id: 3
+  login: tiagoluchini
+  email: info@tiagoluchini.eu
+  salt: 43fac2328bb182aef239b94f3f821b5b0d48a150
+  crypted_password: 1b154fa6dea1fc3cef7fbae08226f2928458afa3

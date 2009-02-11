@@ -13,7 +13,7 @@ class Target < ActiveRecord::Base
   end
   
   def validate
-    unless self[:target_date] && self[:starting_date] < self[:target_date]
+    unless self[:target_date] && self[:starting_date] && self[:starting_date] < self[:target_date]
       errors.add(:starting_date, "has to happen before :target_date") 
       errors.add(:target_date,   "has to happen after :starting_date") 
     end
