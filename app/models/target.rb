@@ -1,7 +1,7 @@
 class Target < ActiveRecord::Base
   belongs_to :user
 
-  validates_presence_of     :starting_date, :starting_weight, :target_date, :target_weight
+  validates_presence_of     :user, :starting_date, :starting_weight, :target_date, :target_weight
   
   def certain_date(specified_date)
     if specified_date && self[:target_date] >= specified_date && specified_date >= self[:starting_date]
