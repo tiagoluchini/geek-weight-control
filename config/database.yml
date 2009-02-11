@@ -44,6 +44,15 @@ test:
   password: pimpao
   host: weight-db.tiagoluchini.eu
 
+test_ixonos:
+  adapter: mysql
+  encoding: utf8
+  database: weight_control_test
+  pool: 5
+  username: root
+  password: pimpao
+  host: LTTL176.ixonos.local
+
 production:
   adapter: mysql
   encoding: utf8
