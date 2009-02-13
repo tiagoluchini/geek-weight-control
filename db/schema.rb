@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090210204051) do
+ActiveRecord::Schema.define(:version => 20090213080217) do
 
   create_table "logs", :force => true do |t|
     t.integer  "user_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20090210204051) do
     t.integer  "lock_version", :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "obs"
   end
 
   add_index "logs", ["date"], :name => "index_logs_on_date"

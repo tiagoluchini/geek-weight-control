@@ -4,7 +4,9 @@ class User < ActiveRecord::Base
   attr_accessor :password
 
   has_one	:target, :dependent => :destroy 
-  has_many	:logs
+  has_many	:logs, :order => 'date asc'
+  has_one   :first_log, :class_name => 'Log', :order => 'date asc'
+  has_one   :last_log,  :class_name => 'Log', :order => 'date desc'
 
   validates_presence_of     :login, :email
   validates_presence_of     :password,                   :if => :password_required?
