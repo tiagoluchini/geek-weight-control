@@ -16,15 +16,13 @@ ActiveRecord::Schema.define(:version => 20090214072421) do
     t.date     "date"
     t.float    "weight"
     t.float    "trend"
-    t.integer  "lock_version",    :default => 0
+    t.integer  "lock_version", :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "obs"
-    t.integer  "previous_log_id"
   end
 
   add_index "logs", ["date"], :name => "index_logs_on_date"
-  add_index "logs", ["previous_log_id"], :name => "index_logs_on_previous_log_id"
   add_index "logs", ["user_id"], :name => "index_logs_on_user_id"
 
   create_table "targets", :force => true do |t|
