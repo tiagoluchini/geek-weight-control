@@ -8,16 +8,41 @@ class Log < ActiveRecord::Base
   validates_presence_of     :user_id, :date, :weight
   validates_uniqueness_of   :date, :scope => :user_id
 
-  before_save       :calc_trend
+  before_save       :calc_trend_before_save
+  before_destroy    :calc_trend_before_destroy
 
   def target_weight
-#    user.target.certain_date(date) if user && user.target && date
+    target = Target.find_by_user_id(user_id)
+    target.certain_date(date) if target && date
   end
 
+  def find_all_after_this
+    Log.find(:all, :conditions => ["user_id = :user_id AND date > :date",
+                   {:user_id => user_id, :date => date}],
+                   :order => 'date asc')
+  end
+
+  def find_immediately_before_this
+    Log.find(:first, :conditions => ["user_id = :user_id AND date < :date",
+                     {:user_id => user_id, :date => date}],
+                     :order => 'date desc')
+  end
+
+  def find_immediately_after_this
+    Log.find(:first, :conditions => ["user_id = :user_id AND date > :date",
+                     {:user_id => user_id, :date => date}],
+                     :order => 'date desc')
+  end
+
+
   protected
-    def calc_trend
+    def calc_trend_before_save
       process_before_log
-      process_after_log
+      process_after_log(self)
+    end
+    
+    def calc_trend_before_destroy
+      process_after_log(find_immediately_before_this)
     end
 
     def process_before_log
@@ -40,18 +65,15 @@ class Log < ActiveRecord::Base
       end
     end
     
-    def process_after_log
+    def process_after_log(first_to_send)
       after_log = nil
       if !@before_log
         begin
-          after_log = Log.find(:all,
-                        :conditions => ["user_id = :user_id AND date > :date",
-                        {:user_id => user_id, :date => date}],
-                        :order => 'date asc')
+          after_log = find_all_after_this
         rescue
         end
         if after_log
-          before_log_to_send = self
+          before_log_to_send = first_to_send
           after_log.each do |log|
             log.trend = nil
             log.before_log = before_log_to_send

@@ -1,11 +1,25 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  date: 2009-02-09
-  weight: 1.5
-  trend: 1.5
+day_one:
+  user_id: 3
+  date: 2009-02-10
+  weight: 124
+  trend: 124
 
-two:
-  date: 2009-02-09
-  weight: 1.5
-  trend: 1.5
+day_two:
+  user_id: 3
+  date: 2009-02-11
+  weight: 90
+  trend: 120.6
+  
+day_three:
+  user_id: 3
+  date: 2009-02-12
+  weight: 55
+  trend: 114.04
+  
+day_five:
+  user_id: 3
+  date: 2009-02-14
+  weight: 55
+  trend: 108.136
