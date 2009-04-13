@@ -39,7 +39,7 @@ module RubyAMF
     # Flex::    [RemoteClass(alias='User')]
     # RubyAMF will automagically convert it to a User active record without you having to create a class mapping.
     # This also works with non active record class mappings. See the wiki on the google code page for a downloadable example.
-    ClassMappings.assume_types = false
+    ClassMappings.assume_types = true
     
     # => Class Mapping Definitions
     # A Class Mapping definition conists of at least these two properties:

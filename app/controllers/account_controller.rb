@@ -2,7 +2,12 @@ class AccountController < ApplicationController
 
   # say something nice, you goof!  something sweet.
   def index
-    redirect_to(:action => 'signup') unless logged_in? #|| User.count > 0
+    respond_to do |format|
+    format.html { redirect_to(:action => 'signup') unless logged_in? }
+    format.amf { 
+      render :amf => self.current_user if logged_in? 
+      #render :amf => FaultObject.new("Invalid login/password!") unless logged_in?
+    }
   end
 
   def login
