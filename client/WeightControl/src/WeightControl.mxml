@@ -1,4 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+
+	<mx:RemoteObject 
+		id="userService"
+		destination="rubyamf"
+		endpoint="http://localhost:3000/rubyamf_gateway"
+		source="AccountController"
+		showBusyCursor="true">
+		<mx:method name="return_first" result="resultReturnFirst(event)"/>
+	</mx:RemoteObject>
+
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			import mx.rpc.AsyncToken;
+			private function returnFirst():void {
+				userService.return_first();
+			}
+			
+			private function resultReturnFirst(result:ResultEvent):void {
+				trace(result.result.login);
+				Alert.show(result.result.login);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas>
+		<mx:Button label="Call" click="returnFirst()"/>
+	</mx:Canvas>
 	
 </mx:Application>
