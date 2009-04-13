@@ -29,6 +29,11 @@ class AccountController < ApplicationController
     render :action => 'signup'
   end
   
+  def return_first
+    @user = User.find(:first)
+    render :amf => @user
+  end
+  
   def logout
     self.current_user.forget_me if logged_in?
     cookies.delete :auth_token
