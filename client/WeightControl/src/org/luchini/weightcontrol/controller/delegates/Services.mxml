@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cairngorm:ServiceLocator xmlns:mx="http://www.adobe.com/2006/mxml" 
+    xmlns:cairngorm="http://www.adobe.com/2006/cairngorm">
+
+	<mx:RemoteObject 
+		id="accountService"
+		destination="rubyamf"
+		endpoint="http://localhost:3000/rubyamf_gateway"
+		source="AccountController"
+		showBusyCursor="true"/>
+	
+</cairngorm:ServiceLocator>

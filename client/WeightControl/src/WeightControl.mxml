@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+<mx:Application 
+		xmlns:mx="http://www.adobe.com/2006/mxml" 
+		xmlns:services="org.luchini.weightcontrol.controller.delegates.*"
+		xmlns:controller="org.luchini.weightcontrol.controller.*"
+		layout="absolute">
 
-	<mx:RemoteObject 
-		id="userService"
-		destination="rubyamf"
-		endpoint="http://localhost:3000/rubyamf_gateway"
-		source="AccountController"
-		showBusyCursor="true">
-		<mx:method name="return_first" result="resultReturnFirst(event)"/>
-	</mx:RemoteObject>
+	<services:Services id="services"/>
+	<controller:Controller id="controller"/>
 
 	<mx:Script>
 		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import org.luchini.weightcontrol.events.AccountEvent;
 			import org.luchini.weightcontrol.model.vo.User;
+			import org.luchini.weightcontrol.model.WeightControlModelLocator;
 			import mx.rpc.events.ResultEvent;
 			import mx.controls.Alert;
 			import mx.rpc.AsyncToken;
+			
 			private function returnFirst():void {
-				userService.return_first();
+				var event:AccountEvent = new AccountEvent(AccountEvent.LOGIN);
+				event.login = "tiagoluchini";
+				event.password = "pimpao";
+				CairngormEventDispatcher.getInstance().dispatchEvent(event);
 			}
 			
-			private function resultReturnFirst(event:ResultEvent):void {
-				var user:User = event.result as User;
-				trace(user);
-				//Alert.show(user.login);
-			}
 		]]>
 	</mx:Script>
 	
 	<mx:Canvas>
 		<mx:Button label="Call" click="returnFirst()"/>
+		<mx:Label text="{WeightControlModelLocator.getInstance().user.email}"/>
 	</mx:Canvas>
 	
 </mx:Application>
