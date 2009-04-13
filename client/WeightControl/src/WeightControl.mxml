@@ -12,6 +12,7 @@
 
 	<mx:Script>
 		<![CDATA[
+			import org.luchini.weightcontrol.model.vo.User;
 			import mx.rpc.events.ResultEvent;
 			import mx.controls.Alert;
 			import mx.rpc.AsyncToken;
@@ -19,9 +20,10 @@
 				userService.return_first();
 			}
 			
-			private function resultReturnFirst(result:ResultEvent):void {
-				trace(result.result.login);
-				Alert.show(result.result.login);
+			private function resultReturnFirst(event:ResultEvent):void {
+				var user:User = event.result as User;
+				trace(user);
+				//Alert.show(user.login);
 			}
 		]]>
 	</mx:Script>
