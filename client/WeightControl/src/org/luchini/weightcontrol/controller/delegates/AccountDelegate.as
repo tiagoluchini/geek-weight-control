@@ -17,7 +17,7 @@ package org.luchini.weightcontrol.controller.delegates
 		}
 		
 		public function login(login:String, password:String):void {
-			var call:AsyncToken = this.service.login(login, password);
+			var call:AsyncToken = this.service.login({login: login, password: password});
 			call.addResponder(this.responder);
 		}
 
