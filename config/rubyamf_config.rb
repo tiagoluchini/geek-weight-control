@@ -104,7 +104,7 @@ module RubyAMF
     # Even if its set to false, if you specify specific ParameterMappings, those will still get entered as the param keys you specify. Likewise, you
     # always have access to the parameters from rubyamf in your controller by calling rubyamf_params[0], rubyamf_params[1], etc regardless of
     # if it this is set or not.
-    # ParameterMappings.always_add_to_params = true
+    ParameterMappings.always_add_to_params = true
      
     # => Return Top Level Hash
     # For those scaffolding users out there, who want the top-level object to come as a hash so scaffolding works out of the box.
@@ -115,5 +115,6 @@ module RubyAMF
     #
     # Here's an example:
     # ParameterMappings.register(:controller => :UserController, :action => :find_friend, :params => { :friend => "[0]['friend']" })
+    # ParameterMappings.register(:controller => :AccountController, :action => :login, :params => {:login => "[0]", :password => "[1]"})
   end
 end

@@ -3,14 +3,18 @@ class AccountController < ApplicationController
   # say something nice, you goof!  something sweet.
   def index
     respond_to do |format|
-    format.html { redirect_to(:action => 'signup') unless logged_in? }
-    format.amf { 
-      render :amf => self.current_user if logged_in? 
-      #render :amf => FaultObject.new("Invalid login/password!") unless logged_in?
-    }
+      format.html { 
+        redirect_to(:action => 'signup') unless logged_in? }
+      format.amf { 
+        render :amf => self.current_user if logged_in? 
+        render :amf => FaultObject.new("Invalid login/password!") unless logged_in?
+      }
+    end
   end
 
   def login
+  puts "\nparams: " + params.inspect
+  puts "\n\nrubyamf_params: " + rubyamf_params.inspect
     return unless request.post?
     self.current_user = User.authenticate(params[:login], params[:password])
     if logged_in?
@@ -18,8 +22,13 @@ class AccountController < ApplicationController
         self.current_user.remember_me
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
-      redirect_back_or_default(:controller => '/account', :action => 'index')
-      flash[:notice] = "Logged in successfully"
+#      redirect_back_or_default(:controller => '/account', :action => 'index')
+#      flash[:notice] = "Logged in successfully"
+      render :amf => self.current_user
+    else
+      #render :amf => FaultObject.new("Invalid login/password!") unless logged_in?
+      s = "Resultado: " + rubyamf_params[0] + " - " + params[0] + " - " + params[:login]
+      render :amf => s
     end
   end
 
