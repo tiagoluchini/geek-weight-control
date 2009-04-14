@@ -5,6 +5,7 @@ package org.luchini.weightcontrol.events
 	public class AccountEvent extends CairngormEvent
 	{
 		public static var LOGIN:String = "LOGIN";
+		public static var USER:String = "USER";
 		
 		public var login:String;
 		public var password:String;

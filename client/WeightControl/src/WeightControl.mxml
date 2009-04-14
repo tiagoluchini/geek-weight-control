@@ -8,8 +8,16 @@
 	<services:Services id="services"/>
 	<controller:Controller id="controller"/>
 
+	<mx:RemoteObject 
+		id="accountService2"
+		destination="rubyamf"
+		endpoint="http://localhost:3000/rubyamf_gateway"
+		source="AccountController"
+		showBusyCursor="true"/>
+
 	<mx:Script>
 		<![CDATA[
+			import com.adobe.cairngorm.business.ServiceLocator;
 			import com.adobe.cairngorm.control.CairngormEventDispatcher;
 			import org.luchini.weightcontrol.events.AccountEvent;
 			import org.luchini.weightcontrol.model.vo.User;
@@ -18,19 +26,38 @@
 			import mx.controls.Alert;
 			import mx.rpc.AsyncToken;
 			
-			private function returnFirst():void {
+			private function loginClick():void {
+				/*ServiceLocator.getInstance().setRemoteCredentials("usususususu", "papapapapap");
 				var event:AccountEvent = new AccountEvent(AccountEvent.LOGIN);
 				event.login = "tiagoluchini";
 				event.password = "pimpao";
-				CairngormEventDispatcher.getInstance().dispatchEvent(event);
+				CairngormEventDispatcher.getInstance().dispatchEvent(event);*/
+				accountService2.login("tiagoluchini", "pimpao");
+			}
+			
+			private function userClick():void {
+				/*WeightControlModelLocator.getInstance().user = null;
+				var event:AccountEvent = new AccountEvent(AccountEvent.USER);
+				CairngormEventDispatcher.getInstance().dispatchEvent(event);*/
+				accountService2.user();
+			}
+			
+			private function setarClick():void {
+				accountService2.setRemoteCredentials(txtUser.text, txtPass.text);
 			}
 			
 		]]>
 	</mx:Script>
 	
 	<mx:Canvas>
-		<mx:Button label="Call" click="returnFirst()"/>
-		<mx:Label text="{WeightControlModelLocator.getInstance().user.email}"/>
+		<mx:HBox>
+			<mx:Button label="Login" click="loginClick()"/>
+			<mx:Button label="User" click="userClick()"/>
+			<mx:TextInput id="txtUser" text="gambi_user"/>
+			<mx:TextInput id="txtPass" text="gambi_pass"/>
+			<mx:Button label="Setar" click="setarClick()"/>
+			<mx:Label text="{WeightControlModelLocator.getInstance().user.email}"/>	
+		</mx:HBox>
 	</mx:Canvas>
 	
 </mx:Application>
