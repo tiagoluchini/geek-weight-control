@@ -1,5 +1,7 @@
 class AccountController < ApplicationController
 
+  before_filter :authenticate
+
   # say something nice, you goof!  something sweet.
   def index
     respond_to do |format|
@@ -13,22 +15,11 @@ class AccountController < ApplicationController
   end
 
   def login
-  puts "\nparams: " + params.inspect
-  puts "\n\nrubyamf_params: " + rubyamf_params.inspect
-    return unless request.post?
     self.current_user = User.authenticate(params[:login], params[:password])
     if logged_in?
-      if params[:remember_me] == "1"
-        self.current_user.remember_me
-        cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
-      end
-#      redirect_back_or_default(:controller => '/account', :action => 'index')
-#      flash[:notice] = "Logged in successfully"
       render :amf => self.current_user
     else
-      #render :amf => FaultObject.new("Invalid login/password!") unless logged_in?
-      s = "Resultado: " + rubyamf_params[0] + " - " + params[0] + " - " + params[:login]
-      render :amf => s
+      render :amf => FaultObject.new(WeightFaults.INVALID_LOGIN, "Invalid login")
     end
   end
 
@@ -43,9 +34,8 @@ class AccountController < ApplicationController
     render :action => 'signup'
   end
   
-  def return_first
-    @user = User.find(:first)
-    render :amf => @user
+  def user
+    render :amf => self.current_user
   end
   
   def logout
@@ -55,4 +45,16 @@ class AccountController < ApplicationController
     flash[:notice] = "You have been logged out."
     redirect_back_or_default(:controller => '/account', :action => 'index')
   end
+  
+  protected
+  
+    def authenticate
+      creds = self.credentials
+      #puts "has creds? " + (!creds.nil?).to_s
+      puts "CREDS: " + creds.inspect if creds
+      #self.current_user = User.authenticate(creds[:username], creds[:password])
+      #return logged_in?
+      return true
+    end
+
 end
