@@ -42,21 +42,23 @@ private
   #remoteObject setRemoteCredentials retrieval
  def html_credentials
     auth_data = request.env['RAW_POST_DATA']
-    auth_data = auth_data.scan(/DSRemoteCredentials\006.([A-Za-z0-9\+\/=]*).*?\006/)[0][0]
-    auth_data.gsub!("DSRemoteCredentialsCharset", "")
-    if auth_data.size > 0
-
-      remote_auth = Base64.decode64(auth_data).split(':')[0..1]
-    else
-      return nil
-    end
-    case RubyAMF::Configuration::ClassMappings.hash_key_access
-    when :string:
-      return {'username' => remote_auth[0], 'password' => remote_auth[1]}
-    when :symbol:
-      return {:username => remote_auth[0], :password => remote_auth[1]}
-    when :indifferent:
-      return HashWithIndifferentAccess.new({:username => remote_auth[0], :password => remote_auth[1]})
+    scan = auth_data.scan(/DSRemoteCredentials\006.([A-Za-z0-9\+\/=]*).*?\006/)
+    auth_data = (!scan.nil? && scan.size > 0 && scan[0].size > 0) ? scan[0][0] : nil;
+    if auth_data
+      auth_data.gsub!("DSRemoteCredentialsCharset", "")
+      if auth_data.size > 0
+        remote_auth = Base64.decode64(auth_data).split(':')[0..1]
+      else
+        return nil
+      end
+      case RubyAMF::Configuration::ClassMappings.hash_key_access
+      when :string:
+        return {'username' => remote_auth[0], 'password' => remote_auth[1]}
+      when :symbol:
+        return {:username => remote_auth[0], :password => remote_auth[1]}
+      when :indifferent:
+        return HashWithIndifferentAccess.new({:username => remote_auth[0], :password => remote_auth[1]})
+      end
     end
   end
 end
