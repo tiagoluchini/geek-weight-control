@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	paddingLeft="10" paddingRight="10" 
+	creationComplete="creationCompleteHandler(event)" 
+	initialize="init(event)"
+	xmlns:filters="flash.filters.*" 
+	xmlns:vo="com.influire.dietmonitorclient.vo.*">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.events.PropertyChangeEvent;
+			import com.influire.dietmonitorclient.vo.CurrentSetVO;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import com.influire.dietmonitorclient.setup.InternalSetup;
+			import com.influire.dietmonitorclient.security.SignedToken;
+			
+			private var _currentSetVO:CurrentSetVO;
+			
+			[Bindable]
+			public function set currentSetVO(value:CurrentSetVO):void {
+				_currentSetVO = value;
+				if (_currentSetVO != null) {
+					setCurrentState(_currentSetVO.filterType);
+					filterType.selectedValue = _currentSetVO.filterType;
+					aux1.selectedIndex = _currentSetVO.aux;
+					year1.selectedItem = _currentSetVO.year;
+				}
+			}
+			public function get currentSetVO():CurrentSetVO {
+				return _currentSetVO;
+			}
+			
+			[Bindable]
+			private var months:Array = [{label: "Month", data: 0},
+										{label: "Jan", data: 1}, {label: "Feb", data: 2}, 
+										{label: "Mar", data: 3}, {label: "Apr", data: 4},
+										{label: "May", data: 5}, {label: "Jun", data: 6},
+										{label: "Jul", data: 7}, {label: "Aug", data: 8},
+										{label: "Sep", data: 9}, {label: "Oct", data: 10},
+										{label: "Nov", data: 11}, {label: "Dec", data: 12}];
+
+			[Bindable]
+			private var semesters:Array = [{label: "Semester", data: 0}, {label: "1st (S1)", data: 1}, {label: "2nd (S2)", data: 2}];
+			
+			[Bindable]
+			private var quarters:Array = [{label: "Quarter", data: 0}, {label: "1st (Q1)", data: 1},
+										{label: "2nd (Q2)", data: 2}, {label: "3rd (Q3)", data: 3}, {label: "4th (Q4)", data: 3}];
+			
+			[Bindable]
+			private var bimesters:Array = [{label: "Bimester", data: 0}, {label: "1st (B1)", data: 1},
+										{label: "2nd (B2)", data: 2}, {label: "3rd (B3)", data: 3},
+										{label: "4th (B4)", data: 4}, {label: "5th (B5)", data: 5}, {label: "6th (B6)", data: 6}];
+			
+			private function init(event:Event):void {
+			}
+			
+			private function creationCompleteHandler(event:Event):void {
+				setCurrentState("month");
+				logChartService.getAvailableYears(SignedToken.getInstance().userInfo);				
+			}
+		
+			private function filterChangeHandler(event:Event):void {
+				setCurrentState(filterType.selectedValue as String);
+			}
+			
+			private function goButtonClickHandler(event:Event):void {
+				if ((currentState != "year" && aux1.selectedIndex == 0) || 
+					(currentState == "custom" && aux2.selectedIndex == 0)) {
+					Alert.show("Please select the period to filter.");
+				} else {
+					dispatchEvent(new FilterEvent("filterChanged", filterVO));
+				}
+			}
+		
+		]]>
+	</mx:Script>
+
+	<mx:Metadata>
+		[Event("filterChanged")]
+	</mx:Metadata>
+
+	<mx:RemoteObject
+			endpoint="{InternalSetup.ENDPOINT}"
+			showBusyCursor="true"
+			id="logChartService" destination="logChartService">
+	</mx:RemoteObject>
+
+	<vo:FilterVO id="filterVO"
+		filterType="{String(filterType.selectedValue)}"
+		year1="{int(year1.text)}"
+		aux1="{int(aux1.selectedIndex)}"
+		day1="{int(day1.text)}"
+		year2="{int(year2.text)}"
+		aux2="{int(aux2.selectedIndex)}"
+		day2="{int(day2.text)}"/>
+
+	<mx:states>
+		<mx:State name="month">
+			<mx:SetProperty target="{aux1}" name="dataProvider" value="{months}"/>
+			<mx:SetProperty target="{aux1}" name="enabled" value="true"/>
+		</mx:State>
+		<mx:State name="year">
+			<mx:SetProperty target="{aux1}" name="enabled" value="false"/>		
+		</mx:State>
+		<mx:State name="semester">
+			<mx:SetProperty target="{aux1}" name="dataProvider" value="{semesters}"/>		
+			<mx:SetProperty target="{aux1}" name="enabled" value="true"/>
+		</mx:State>
+		<mx:State name="quarter">
+			<mx:SetProperty target="{aux1}" name="dataProvider" value="{quarters}"/>
+			<mx:SetProperty target="{aux1}" name="enabled" value="true"/>
+		</mx:State>
+		<mx:State name="bimester">
+			<mx:SetProperty target="{aux1}" name="dataProvider" value="{bimesters}"/>		
+			<mx:SetProperty target="{aux1}" name="enabled" value="true"/>
+		</mx:State>
+		<mx:State name="custom">
+			<mx:SetProperty target="{aux1}" name="dataProvider" value="{months}"/>		
+			<mx:SetProperty target="{aux1}" name="enabled" value="true"/>
+			<mx:SetProperty target="{day1}" name="enabled" value="true"/>
+			<mx:SetProperty target="{dateBox2}" name="enabled" value="true"/>
+		</mx:State>
+	</mx:states>
+
+	<mx:RadioButtonGroup id="filterType" change="filterChangeHandler(event)"/>
+
+	<mx:HBox width="100%">
+		<mx:VBox width="50%">
+			<mx:RadioButton label="Month" value="month" groupName="filterType" selected="true"/>
+			<mx:RadioButton label="Year" value="year" groupName="filterType"/>	
+			<mx:RadioButton label="Semester" value="semester" groupName="filterType"/>			
+		</mx:VBox>
+		<mx:VBox width="50%">
+			<mx:RadioButton label="Quarter" value="quarter" groupName="filterType"/>
+			<mx:RadioButton label="Bimester" value="bimester" groupName="filterType"/>
+			<mx:RadioButton label="Custom" value="custom" groupName="filterType"/>			
+		</mx:VBox>
+	</mx:HBox>
+	
+	<mx:HBox width="100%">
+
+		<mx:VBox width="100%">
+			<mx:HBox id="dateBox1" width="100%" showEffect="fadeIn" hideEffect="fadeOut">
+				<mx:ComboBox id="year1" dataProvider="{logChartService.getAvailableYears.lastResult}"/>
+				<mx:ComboBox id="aux1" width="100%" 
+					showEffect="fadeIn" hideEffect="fadeOut"
+					dataProvider="{months}"
+					enabled="false"/>
+				<mx:TextInput id="day1" text="01" width="30" 
+					showEffect="fadeIn" hideEffect="fadeOut"
+					enabled="false"/>
+			</mx:HBox>
+		
+			<mx:HBox id="dateBox2" width="100%" showEffect="fadeIn" hideEffect="fadeOut" enabled="false">
+				<mx:ComboBox id="year2" dataProvider="{logChartService.getAvailableYears.lastResult}"/>
+				<mx:ComboBox id="aux2" dataProvider="{months}" width="100%"/>
+				<mx:TextInput id="day2" text="01" width="30"/>
+			</mx:HBox>
+		</mx:VBox>
+	
+		<mx:Button id="goButton" label="Go" height="100%" click="goButtonClickHandler(event)"/>		
+	
+	</mx:HBox>
+	
+</mx:VBox>

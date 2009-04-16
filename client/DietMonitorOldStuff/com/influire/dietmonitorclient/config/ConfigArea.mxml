@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+			width="100%" height="100%" horizontalAlign="center" verticalAlign="middle"
+			paddingLeft="5" paddingRight="5" paddingBottom="10" paddingTop="10">
+	
+	<mx:Panel title="Editing Config Properties" layout="horizontal">
+		<mx:Form>
+			<mx:FormHeading label="General Config"/>
+			<mx:FormItem label="Weight Unit">
+				<mx:ComboBox dataProvider="[Kg,pounds,stones]"/>
+			</mx:FormItem>
+			<mx:FormItem label="Energy Unit">
+				<mx:ComboBox dataProvider="[kcal,kjoule]"/>
+			</mx:FormItem>
+			<mx:FormItem label="Height Unit">
+				<mx:ComboBox dataProvider="[Cm,feet]"/>
+			</mx:FormItem>
+			<mx:FormItem label="Decimal Character">
+				<mx:ComboBox dataProvider="[(point),(comma)]"/>
+			</mx:FormItem>
+		</mx:Form>
+	
+		<mx:Form>
+			<mx:FormHeading label="Personal Config"/>
+			<mx:FormItem label="Name">
+				<mx:TextInput/>
+			</mx:FormItem>
+			<mx:FormItem label="Email">
+				<mx:TextInput/>
+			</mx:FormItem>
+			<mx:FormItem label="New Password">
+				<mx:TextInput displayAsPassword="true"/>
+			</mx:FormItem>
+			<mx:FormItem label="Retype Password">
+				<mx:TextInput displayAsPassword="true"/>
+			</mx:FormItem>
+			<mx:FormItem label="Height">
+				<mx:HBox>
+					<mx:TextInput width="40"/><mx:Label text="Cm"/>
+				</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem label="Activity Level">
+				<mx:ComboBox dataProvider="[1,2,3,4,5,6]"/>
+			</mx:FormItem>
+			<mx:FormItem label="Date of Birth">
+				<mx:DateField/>
+			</mx:FormItem>
+			<mx:FormItem label="Gender">
+				<mx:RadioButton label="male"/>
+				<mx:RadioButton label="female"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ControlBar>
+			<mx:Button label="Save"/>
+			<mx:Button label="Reset"/>
+		</mx:ControlBar>
+	</mx:Panel>
+	
+	
+</mx:VBox>

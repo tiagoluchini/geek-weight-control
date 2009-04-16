@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+			width="100%" height="100%" 
+			activate="activateHandler(event)"
+			initialize="init(event)"
+			show="showHandler(event)"
+			creationComplete="creationCompleteHandler(event)"
+			paddingLeft="5" paddingRight="5" paddingBottom="10" paddingTop="10"
+			xmlns:local="*" xmlns:logchart="com.influire.dietmonitorclient.logchart.*">
+
+	<mx:Script>
+        <![CDATA[
+        	import mx.controls.Alert;
+        	import com.influire.dietmonitorclient.vo.ChartDataVO;
+        	import com.influire.dietmonitorclient.vo.LogChartDataVO;
+        	import mx.rpc.events.ResultEvent;
+        	import com.influire.dietmonitorclient.vo.FilterVO;
+
+        	import com.influire.dietmonitorclient.setup.InternalSetup;
+        	import com.influire.dietmonitorclient.security.SignedToken;
+			import mx.effects.easing.Bounce;
+	        import mx.collections.ArrayCollection;
+
+			private var _simpleFetch:Boolean = false;
+
+			private function activateHandler(event:Event):void {
+			}
+
+			private function showHandler(event:Event):void {			
+			}
+			
+			private function creationCompleteHandler(event:Event):void {
+				if (logChartDataVO == null) {
+					_simpleFetch = true;
+					logChartService.getLogChartData(SignedToken.getInstance().userInfo);
+				}
+			}
+			
+			private function init(event:Event):void {
+				navigator.addEventListener("filterChanged", filterChangedHandler, true);
+				navigator.addEventListener("nextClicked", nextClickedHandler, true);
+				navigator.addEventListener("previousClicked", previousClickedHandler, true);
+			}
+			
+			[Bindable]
+			private var logChartDataVO:LogChartDataVO;
+	
+			private function todayClickedHandler(event:Event):void {
+				logChartService.getLogChartData(SignedToken.getInstance().userInfo);
+			}
+	
+			private function showButtonClickHandler(even:Event):void {
+				if (currentState == "navigatorHidden") {
+					setCurrentState("");
+				} else {
+					setCurrentState("navigatorHidden");
+				}
+			}
+			
+			private function filterChangedHandler(event:FilterEvent):void {
+				logChartService.getLogChartData(SignedToken.getInstance().userInfo, event.filterVO);
+			}
+			
+			private function getLogChartDataResultHandler(event:ResultEvent):void {
+				logChartDataVO = event.result as LogChartDataVO;
+				if (logChartDataVO.summaryVO == null && !_simpleFetch) {
+					Alert.show("Your search filter returned no results.");
+				}
+				_simpleFetch = false;
+			}
+			
+			private function previousClickedHandler(event:Event):void {
+				logChartService.getLogChartData(SignedToken.getInstance().userInfo, 0, 
+												logChartDataVO.currentSetVO);
+			}
+			
+			private function nextClickedHandler(event:Event):void {
+				logChartService.getLogChartData(SignedToken.getInstance().userInfo, 1, 
+												logChartDataVO.currentSetVO);
+			}
+
+        ]]>
+    </mx:Script>
+
+	<mx:RemoteObject
+			endpoint="{InternalSetup.ENDPOINT}"
+			showBusyCursor="true"
+			id="logChartService" destination="logChartService">	
+		<mx:method name="getLogChartData" result="getLogChartDataResultHandler(event)"/>	
+	</mx:RemoteObject>
+
+	<mx:states>
+		<mx:State name="navigatorHidden">
+			<mx:SetProperty target="{navigator}" name="width" value="0"/>
+			<mx:SetProperty target="{mainChart}" name="width" value="100%"/>
+			<mx:SetProperty target="{showButton}" name="label" value="&lt;"/>
+		</mx:State>
+	</mx:states>
+
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize targets="{[mainChart, navigator]}" duration="700" easingFunction="Bounce.easeOut"/>
+		</mx:Transition>
+	</mx:transitions>
+
+	<logchart:MainChart id="mainChart" dataProvider="{logChartDataVO.chartDataVOs}" resizeEffect="expandRight"/>
+
+	<mx:Button id="showButton" height="100%" width="20" label="&gt;" click="showButtonClickHandler(event)"/>
+
+	<logchart:NavigatorArea id="navigator" 
+			logVOs="{logChartDataVO.logVOs}" 
+			currentSetVO="{logChartDataVO.currentSetVO}"
+			summaryVO="{logChartDataVO.summaryVO}"
+			height="100%" width="330" todayClicked="todayClickedHandler(event)"/>
+	
+</mx:HBox>

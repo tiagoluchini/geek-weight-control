@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" paddingLeft="10" paddingRight="10">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.influire.dietmonitorclient.vo.SummaryVO;
+			
+			[Bindable]
+			public var summaryVO:SummaryVO;
+			
+			private function describeEnergy(value:int):String {
+				if (value == SummaryVO.ENERGY_DEFICIT)
+					return "(deficit)";
+				else
+					return "(excess)";
+			}
+			
+			private function describeWeight(value:int):String {
+				if (value == SummaryVO.WEIGHT_LOSS)
+					return "(loss)";
+				else
+					return "(gain)";
+			}
+			
+			private function describeBMI(status:int):String {
+				//UNDERWEIGHT, NORMALWEIGHT, OVERWEIGHT, OBESE;
+				if (status == 0)
+					return "(underweight)";
+				else if (status == 1)
+					return "(normal weight)";
+				else if (status == 2)
+					return "(overweight)";
+				else
+					return "(obese)";
+			}
+			
+		]]>
+	</mx:Script>
+
+	<mx:NumberFormatter id="formatter" precision="2" 
+		useThousandsSeparator="true" useNegativeSign="true"/>
+	
+	<mx:HBox>
+		<mx:Label text="Daily Energy: " fontWeight="bold"/>
+		<mx:Label text="{describeEnergy(summaryVO.dailyEnergyStatus)}" color="red" fontWeight="bold"/>
+		<mx:Label text="{formatter.format(summaryVO.dailyEnergy)} kcal"/>
+	</mx:HBox>
+
+	<mx:HBox>
+		<mx:Label text="Weekly Weight: " fontWeight="bold"/>
+		<mx:Label text="{describeWeight(summaryVO.weeklyWeightStatus)}" color="red" fontWeight="bold"/>
+		<mx:Label text="{formatter.format(summaryVO.weeklyWeight)} Kg"/>	
+	</mx:HBox>
+
+	<mx:HBox>
+		<mx:Label text="Last Body Mass: " fontWeight="bold"/>
+		<mx:Label text="{describeBMI(summaryVO.bmiStatus)}" color="red" fontWeight="bold"/>
+		<mx:Label text="{formatter.format(summaryVO.lastBMI)}"/>
+	</mx:HBox>	
+
+	<mx:HBox>
+		<mx:Label text="Last Trend Weight: " fontWeight="bold"/>
+		<mx:Label text="{formatter.format(summaryVO.lastTrendWeight)} Kg"/>
+	</mx:HBox>
+
+	<mx:HBox>
+		<mx:Label text="Recommended Weight: " fontWeight="bold"/>
+		<mx:Label text="{formatter.format(summaryVO.recommendedWeight)} Kg"/>
+	</mx:HBox>
+
+</mx:VBox>

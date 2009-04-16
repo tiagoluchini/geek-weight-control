@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+		xmlns:mx="http://www.adobe.com/2006/mxml" 
+		xmlns:local="*" 
+		xmlns:logchart="com.influire.dietmonitorclient.logchart.*" 
+		xmlns:config="com.influire.dietmonitorclient.config.*" 
+		xmlns:targets="com.influire.dietmonitorclient.targets.*"
+		xmlns:security="com.influire.dietmonitorclient.security.*">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			private function authenticatedHandler(event:Event):void {
+				securityStack.selectedIndex = 1;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:WipeDown id="fadeIn" duration="300"/>
+	<mx:WipeUp id="fadeOut" duration="600"/>
+
+	<mx:ViewStack id="securityStack" selectedIndex="0" width="100%" height="100%">
+	
+		<security:SigninPanel authenticated="authenticatedHandler(event)" showEffect="fadeIn" hideEffect="fadeOut"/>
+
+		<mx:TabNavigator width="100%" height="100%" showEffect="fadeIn" hideEffect="fadeOut">
+	
+			<logchart:LogChartArea label="Log/Chart" showEffect="fadeIn" hideEffect="fadeOut"/>
+			<targets:TargetsArea label="Targets" showEffect="fadeIn" hideEffect="fadeOut"/>
+			<config:ConfigArea label="Config" showEffect="fadeIn" hideEffect="fadeOut"/>
+	
+		</mx:TabNavigator>
+		
+	</mx:ViewStack>	
+	
+</mx:Application>

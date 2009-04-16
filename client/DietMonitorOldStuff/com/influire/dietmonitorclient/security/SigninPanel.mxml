@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	activate="activateHandler(event)" 
+	creationComplete="creationCompleteHandler(event)" 
+	width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.influire.dietmonitorclient.vo.UserInfoVO;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			import com.influire.dietmonitorclient.setup.InternalSetup;
+			
+			private function activateHandler(event:Event):void {
+				email.setFocus();
+			}
+			
+			private function resetClickHandler(event:Event):void {
+				email.text = "";
+				password.text = "";
+				email.setFocus();
+			}
+			
+			private function okClickHandler(event:Event):void {
+				userService.validate.send();
+			}
+			
+			private function validateResultHandler(event:ResultEvent):void {
+				var userInfo:UserInfoVO = event.result as UserInfoVO;
+				if (userInfo != null) {
+					this.signUser(userInfo);
+				} else {
+					Alert.show("Email/password mismatch. Try again.","DietMonitor");
+				}
+			}
+			
+			private function signUser(userInfo:UserInfoVO):void {
+				SignedToken.getInstance().userInfo = userInfo;
+				dispatchEvent(new Event("authenticated"));				
+			}
+			
+			private function getUserHandler(event:ResultEvent):void {
+				var obj:Object = event.result;
+				Alert.show(obj.name);
+			}
+			
+			private function creationCompleteHandler(event:Event):void {
+				userService.getLoggedUser();
+			}
+			
+			private	function getLoggedUserResultHandler(event:ResultEvent):void {
+				var userInfo:UserInfoVO = event.result as UserInfoVO;
+				if (userInfo != null) {
+					this.signUser(userInfo);
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Metadata>
+		[Event("authenticated")]
+	</mx:Metadata>
+
+	<mx:RemoteObject 
+		endpoint="{InternalSetup.ENDPOINT}"
+		showBusyCursor="true"
+		id="userService" destination="userService">	
+		<mx:method name="validate" result="validateResultHandler(event)">
+			<mx:arguments>
+				<email>{email.text}</email>
+				<cleanPass>{password.text}</cleanPass>
+			</mx:arguments>
+		</mx:method>
+		<mx:method name="getLoggedUser" result="getLoggedUserResultHandler(event)">
+		</mx:method>
+	</mx:RemoteObject>
+
+	<mx:Panel layout="vertical" title="Sign-In">
+
+		<mx:Form defaultButton="{okButton}">
+			<mx:FormItem label="Email">
+				<mx:TextInput id="email"/>
+			</mx:FormItem>
+			<mx:FormItem label="Password">
+				<mx:TextInput id="password" displayAsPassword="true"/>
+			</mx:FormItem>
+		</mx:Form>
+		
+		<mx:ControlBar horizontalAlign="right">
+			<mx:Button id="okButton" label="Ok" click="okClickHandler(event)"/>
+			<mx:Button label="Reset" click="resetClickHandler(event)"/>
+		</mx:ControlBar>
+			
+	</mx:Panel>
+</mx:HBox>

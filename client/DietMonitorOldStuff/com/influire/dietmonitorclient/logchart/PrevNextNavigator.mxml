@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.influire.dietmonitorclient.vo.CurrentSetVO;
+			
+			[Bindable]
+			public var currentSetVO:CurrentSetVO;
+			
+			private function clickHandler(event:Event):void {
+				if (event.target == previous)
+					dispatchEvent(new Event("previousClicked"));
+				else if (event.target == next)
+					dispatchEvent(new Event("nextClicked"));
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Metadata>
+		[Event("previousClicked")]
+		[Event("nextClicked")]
+	</mx:Metadata>
+	
+	<mx:Button id="previous" label="&lt;" click="clickHandler(event)" enabled="{(currentSetVO != null)}"/>
+	<!--<mx:Button id="myLabel" label="{(currentSetVO != null) ? currentSetVO.label : 'N/A'}" width="100%"/>-->
+	<mx:Label id="myLabel" text="{(currentSetVO != null) ? currentSetVO.label : 'N/A'}" fontWeight="bold" 
+		horizontalCenter="0" verticalCenter="0" textAlign="center" width="100%"/>
+	<mx:Button id="next" label="&gt;" click="clickHandler(event)" enabled="{(currentSetVO != null)}"/>
+	
+</mx:HBox>

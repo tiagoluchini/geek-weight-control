@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+		paddingLeft="5" paddingRight="5" paddingBottom="10" paddingTop="10">
+	
+	<mx:DataGrid height="100%" width="100%">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Start Date" dataField="col1"/>
+			<mx:DataGridColumn headerText="End Date" dataField="col1"/>			
+			<mx:DataGridColumn headerText="Init. Wgt." dataField="col1"/>			
+			<mx:DataGridColumn headerText="Target Wgt." dataField="col2"/>
+			<mx:DataGridColumn headerText="Weight Change" dataField="col5"/>
+			<mx:DataGridColumn headerText="Daily Energy" dataField="col1"/>			
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:Panel title="Target Details">
+		<mx:Form>
+			<mx:FormItem label="Date Start">
+				<mx:DateField/>
+			</mx:FormItem>
+			<mx:FormItem label="Date End">
+				<mx:DateField/>
+			</mx:FormItem>
+			<mx:FormItem label="Initial Weight">
+				<mx:HBox>
+					<mx:TextInput width="40"/>
+					<mx:Label text="Kg"/>
+				</mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem label="Target Weight">
+				<mx:HBox>
+					<mx:TextInput width="40"/>
+					<mx:Label text="Kg"/>
+				</mx:HBox>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ControlBar>
+			<mx:Button label="Add New"/>
+			<mx:Button label="Save"/>
+			<mx:Button label="Remove"/>
+		</mx:ControlBar>	
+	</mx:Panel>
+	
+</mx:HBox>

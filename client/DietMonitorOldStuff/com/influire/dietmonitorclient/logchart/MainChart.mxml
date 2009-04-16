@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:LineChart 
+		xmlns:mx="http://www.adobe.com/2006/mxml" 
+		height="100%" width="100%" showDataTips="true" 
+		xmlns:local="*" xmlns:dashedline="com.influire.dashedline.*">
+
+	<mx:SeriesSlide 
+			id="slideIn" 
+			duration="1000" 
+			direction="up"/>
+	<mx:SeriesSlide 
+			id="slideOut" 
+			duration="1000" 
+			direction="down"/>
+
+	<mx:verticalAxis>
+		<mx:LinearAxis baseAtZero="false" autoAdjust="true" />
+	</mx:verticalAxis>
+	
+	<mx:horizontalAxis>
+	    <mx:CategoryAxis categoryField="Date"/>
+	</mx:horizontalAxis>
+	
+	<mx:series>
+	
+		<dashedline:DashedLineSeries
+				yField="target" displayName="Target"/>
+
+	    <mx:HLOCSeries 
+	    		openField="trend" closeField="observed" 
+	    		lowField="trend" highField="observed" 
+	    		displayName="Actuators"
+	    		showDataEffect="slideIn" hideDataEffect="slideOut">
+	    	<mx:stroke>
+	    		<mx:Stroke weight="1"/>
+	    	</mx:stroke>
+	    </mx:HLOCSeries>
+		<mx:LineSeries 
+				yField="trend" form="curve" displayName="Trend"
+				showDataEffect="slideIn" hideDataEffect="slideOut"/>
+	    <mx:PlotSeries 
+	    		yField="observed" displayName="Observed"
+	    		showDataEffect="slideIn" hideDataEffect="slideOut"/>
+	</mx:series>
+
+</mx:LineChart>

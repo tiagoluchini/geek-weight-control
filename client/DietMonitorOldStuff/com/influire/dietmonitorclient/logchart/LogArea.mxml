@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.binding.utils.BindingUtils;
+			import mx.controls.TextInput;
+			import mx.events.DataGridEventReason;
+			import mx.events.FlexEvent;
+			import mx.controls.Alert;
+			import mx.events.DataGridEvent;
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import com.influire.dietmonitorclient.vo.LogVO;
+			import mx.collections.ArrayCollection;
+			
+			[Bindable]
+			public var logVOs:ArrayCollection;
+			
+			private function format(item:Object, column:DataGridColumn):String {
+				if (column == weightColumn)
+					return weightFormatter.format(item.weight);
+				else if (column == dateColumn)
+					return dateFormatter.format(item.date);
+				else
+					return "";
+			}
+						
+			private function itemEditEndHandler(event:DataGridEvent):void {
+				if (event.reason != DataGridEventReason.CANCELLED) {
+					var newData:String = TextInput(event.currentTarget.itemEditorInstance).text;
+					var logVo:LogVO = LogVO(logVOs[event.rowIndex]);
+					if (event.columnIndex == 1) {
+						if (newData.length == 0) {
+							event.preventDefault();
+						}
+						if (newData != logVo.weight.toString()) {
+							// hastoupdate line
+							// refresh rest (new datasource)
+						}
+					}
+					if (event.columnIndex == 2) {
+						if (newData != logVo.comments) {
+							// hastoupdate line
+						}
+					}
+				}
+			}
+			
+			private function changeHandler(event:Event):void {
+				
+			}
+			
+			private function dataChangeHandler(event:FlexEvent):void {
+				Alert.show(event.toString());
+			}
+			
+		]]>
+	</mx:Script>
+
+	<mx:NumberFormatter id="weightFormatter" precision="2"/>
+	
+	<mx:DateFormatter id="dateFormatter" formatString="DD.MMM.YYYY"/>
+
+	<mx:DataGrid id="grid" height="100%" width="100%" dataProvider="{logVOs}" 
+			editable="true" 
+			itemEditEnd="itemEditEndHandler(event)">
+		<mx:columns>
+			<mx:DataGridColumn id="dateColumn" 
+					headerText="Date" dataField="date" 
+					editable="false" labelFunction="format"/>
+			<mx:DataGridColumn id="weightColumn" 
+					headerText="Weight" dataField="weight" 
+					labelFunction="format" width="70"/>
+			<mx:DataGridColumn id="commentsColumn" 
+					headerText="Comments" dataField="comments"/>
+		</mx:columns>
+	</mx:DataGrid>
+
+	<mx:HBox width="100%">
+		<mx:Label text="Trend:" fontWeight="bold"/><mx:Label text="{LogVO(grid.selectedItem).trend}"/>
+		<mx:Label text="Var:" fontWeight="bold" color="red"/><mx:Label text="{LogVO(grid.selectedItem).variation}"/>
+		<mx:Spacer width="100%"/>
+		<mx:Button label="Add New"/>
+	</mx:HBox>
+
+</mx:VBox>
