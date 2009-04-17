@@ -1,26 +1,9 @@
 class AccountController < ApplicationController
 
-  before_filter :authenticate
-
-  # say something nice, you goof!  something sweet.
-  def index
-    respond_to do |format|
-      format.html { 
-        redirect_to(:action => 'signup') unless logged_in? }
-      format.amf { 
-        render :amf => self.current_user if logged_in? 
-        render :amf => FaultObject.new("Invalid login/password!") unless logged_in?
-      }
-    end
-  end
+  before_filter :authenticate, :except => [:login, :logout, :signup]
 
   def login
-    self.current_user = User.authenticate(params[:login], params[:password])
-    if logged_in?
-      render :amf => self.current_user
-    else
-      render :amf => FaultObject.new(WeightFaults.INVALID_LOGIN, "Invalid login")
-    end
+    render :amf => self.current_user
   end
 
   def signup
@@ -33,17 +16,11 @@ class AccountController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     render :action => 'signup'
   end
-  
-  def user
-    puts "PASSANDO NA USER"
-    render :amf => self.current_user
-  end
-  
+    
   def logout
     self.current_user.forget_me if logged_in?
     cookies.delete :auth_token
     reset_session
-    flash[:notice] = "You have been logged out."
     redirect_back_or_default(:controller => '/account', :action => 'index')
   end
   
@@ -55,11 +32,10 @@ class AccountController < ApplicationController
       if creds[:username]
         self.current_user = User.authenticate(creds[:username], creds[:password])
       end
-      puts "LOGGED_IN?: " + logged_in?.to_s
       if logged_in?
         return true
       else
-        render :amf => FaultObject.new('Authentication Failed')
+        render :amf => WeightFaultObject.new(WeightFaultObject.INVALID_LOGIN)
         return false
       end
     end
