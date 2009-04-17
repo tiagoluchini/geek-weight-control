@@ -42,9 +42,7 @@ private
   #remoteObject setRemoteCredentials retrieval
  def html_credentials
     auth_data = request.env['RAW_POST_DATA']
-    puts "AUTH_DATA: " + auth_data.inspect
     scan = auth_data.scan(/DSRemoteCredentials\006.([A-Za-z0-9\+\/=]*).*?[\001|\006]/)
-    puts "\n\nSCAN: " + scan.inspect
     auth_data = (!scan.nil? && scan.size > 0 && scan[0].size > 0) ? scan[0][0] : nil;
     if auth_data
       auth_data.gsub!("DSRemoteCredentialsCharset", "")
