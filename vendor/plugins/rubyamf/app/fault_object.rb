@@ -4,9 +4,9 @@
 #the onResult function still. So return one of these objects to RubyAMF and it will auto generate a faultObject to return to flash
 #so that it maps correctly to the onFault handler.
 class FaultObject < Hash
-  def initialize(code = 1, message = '', payload=nil)
-    self['faultCode'] = code
-    self['code'] = code
+  def initialize(message = '', payload=nil)
+    self['faultCode'] = 1
+    self['code'] = 1
     self['message'] = message
     self['faultString'] = message
     self['payload'] = payload
