@@ -8,15 +8,6 @@
 	<services:Services id="services"/>
 	<controller:Controller id="controller"/>
 
-	<mx:RemoteObject 
-		id="accountService2"
-		destination="rubyamf"
-		endpoint="http://localhost:3000/rubyamf_gateway"
-		source="AccountController"
-		showBusyCursor="true"
-		result="result(event)"
-		fault="fault(event)"/>
-
 	<mx:Script>
 		<![CDATA[
 			import mx.rpc.events.FaultEvent;
@@ -28,31 +19,17 @@
 			import mx.rpc.events.ResultEvent;
 			import mx.controls.Alert;
 			import mx.rpc.AsyncToken;
-
-			private function result(event:ResultEvent):void {
-				Alert.show("Resultado legal: " + event.result.toString());
-			}
-			
-			private function fault(event:FaultEvent):void {
-				Alert.show("Fault: " + event.fault.faultString);
-			}
 			
 			private function loginClick():void {
-				/*ServiceLocator.getInstance().setRemoteCredentials("usususususu", "papapapapap");
-				var event:AccountEvent = new AccountEvent(AccountEvent.LOGIN);
-				event.login = "tiagoluchini";
-				event.password = "pimpao";
-				CairngormEventDispatcher.getInstance().dispatchEvent(event);*/
-				accountService2.user_login();
+				var event:AccountEvent = new AccountEvent(AccountEvent.USER_LOGIN);
+				event.login = txtUser.text;
+				event.password = txtPass.text;
+				CairngormEventDispatcher.getInstance().dispatchEvent(event);
 			}
 						
-			private function setarClick():void {
-				accountService2.setRemoteCredentials(txtUser.text, txtPass.text);
-				Alert.show("Setado");
-			}
-			
-			private function logoffClick():void {
-				accountService2.user_logout();
+			private function logoutClick():void {
+				var event:AccountEvent = new AccountEvent(AccountEvent.USER_LOGOUT);
+				CairngormEventDispatcher.getInstance().dispatchEvent(event);
 			}
 			
 		]]>
@@ -60,11 +37,10 @@
 	
 	<mx:Canvas>
 		<mx:HBox>
-			<mx:Button label="Login" click="loginClick()"/>
-			<mx:TextInput id="txtUser" text="gambi_user"/>
-			<mx:TextInput id="txtPass" text="gambi_pass"/>
-			<mx:Button label="Setar" click="setarClick()"/>
-			<mx:Button label="Logoff" click="logoffClick()"/>
+			<mx:TextInput id="txtUser" text=""/>
+			<mx:TextInput id="txtPass" text="" displayAsPassword="true"/>
+			<mx:Button label="Login" click="loginClick()"/>		
+			<mx:Button label="Logout" click="logoutClick()"/>
 			<mx:Label text="{WeightControlModelLocator.getInstance().user.email}"/>	
 		</mx:HBox>
 	</mx:Canvas>

@@ -17,15 +17,21 @@ package org.luchini.weightcontrol.controller.delegates
 			this.responder = responder;
 		}
 		
-		public function login(login:String, password:String):void {
-			var call:AsyncToken = this.service.login({login: login, password: password});
+		public function user_login(login:String, password:String):void {
+			ServiceLocator.getInstance().setCredentials(login, password);
+			var call:AsyncToken = this.service.user_login();
 			call.addResponder(this.responder);
 		}
 		
-		public function user():void {
-			var call:AsyncToken = this.service.user();
+		public function user_logout():void {
+			var call:AsyncToken = this.service.user_logout();
 			call.addResponder(this.responder);
 		}
+
+		/*public function user_signup(signUpUserVO:SignUpUserVO):void {
+			var call:AsyncToken = this.service.user_signup(signUpUserVO);
+			call.addResponder(this.responder);
+		}*/
 
 	}
 }
