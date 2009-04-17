@@ -18,7 +18,7 @@ package org.luchini.weightcontrol.controller.delegates
 		}
 		
 		public function user_login(login:String, password:String):void {
-			ServiceLocator.getInstance().setCredentials(login, password);
+			ServiceLocator.getInstance().setRemoteCredentials(login, password);
 			var call:AsyncToken = this.service.user_login();
 			call.addResponder(this.responder);
 		}
