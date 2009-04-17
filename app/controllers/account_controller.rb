@@ -35,6 +35,7 @@ class AccountController < ApplicationController
   end
   
   def user
+    puts "PASSANDO NA USER"
     render :amf => self.current_user
   end
   
@@ -50,10 +51,17 @@ class AccountController < ApplicationController
   
     def authenticate
       creds = self.credentials
-      if creds
+      puts "CREDS: " + creds.inspect
+      if creds[:username]
         self.current_user = User.authenticate(creds[:username], creds[:password])
       end
-      return logged_in?
+      puts "LOGGED_IN?: " + logged_in?.to_s
+      if logged_in?
+        return true
+      else
+        render :amf => FaultObject.new('Authentication Failed')
+        return false
+      end
     end
 
 end

@@ -13,10 +13,13 @@
 		destination="rubyamf"
 		endpoint="http://localhost:3000/rubyamf_gateway"
 		source="AccountController"
-		showBusyCursor="true"/>
+		showBusyCursor="true"
+		result="result(event)"
+		fault="fault(event)"/>
 
 	<mx:Script>
 		<![CDATA[
+			import mx.rpc.events.FaultEvent;
 			import com.adobe.cairngorm.business.ServiceLocator;
 			import com.adobe.cairngorm.control.CairngormEventDispatcher;
 			import org.luchini.weightcontrol.events.AccountEvent;
@@ -25,6 +28,15 @@
 			import mx.rpc.events.ResultEvent;
 			import mx.controls.Alert;
 			import mx.rpc.AsyncToken;
+
+			private function result(event:ResultEvent):void {
+				var user:User = event.result as User;
+				Alert.show("Resultado legal: " + user.email);
+			}
+			
+			private function fault(event:FaultEvent):void {
+				Alert.show("Fault: " + event.message);
+			}
 			
 			private function loginClick():void {
 				/*ServiceLocator.getInstance().setRemoteCredentials("usususususu", "papapapapap");

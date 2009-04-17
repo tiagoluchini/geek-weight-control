@@ -146,7 +146,7 @@ module RubyAMF
         result = RequestStore.render_amf_results
         
         #handle FaultObjects
-        if result.class.to_s == 'FaultObject' #catch returned FaultObjects - use this check so we don't have to include the fault object module
+        if result.is_a?FaultObject #catch returned FaultObjects - use this check so we don't have to include the fault object module
           e = RUBYAMFException.new(result['code'], result['message'])
           e.payload = result['payload']
           raise e
