@@ -50,11 +50,10 @@ class AccountController < ApplicationController
   
     def authenticate
       creds = self.credentials
-      #puts "has creds? " + (!creds.nil?).to_s
-      puts "CREDS: " + creds.inspect if creds
-      #self.current_user = User.authenticate(creds[:username], creds[:password])
-      #return logged_in?
-      return true
+      if creds
+        self.current_user = User.authenticate(creds[:username], creds[:password])
+      end
+      return logged_in?
     end
 
 end
