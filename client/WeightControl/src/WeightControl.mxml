@@ -30,12 +30,11 @@
 			import mx.rpc.AsyncToken;
 
 			private function result(event:ResultEvent):void {
-				var user:User = event.result as User;
-				Alert.show("Resultado legal: " + user.email);
+				Alert.show("Resultado legal: " + event.result.toString());
 			}
 			
 			private function fault(event:FaultEvent):void {
-				Alert.show("Fault: " + event.message);
+				Alert.show("Fault: " + event.fault.faultString);
 			}
 			
 			private function loginClick():void {
@@ -44,18 +43,16 @@
 				event.login = "tiagoluchini";
 				event.password = "pimpao";
 				CairngormEventDispatcher.getInstance().dispatchEvent(event);*/
-				accountService2.login("tiagoluchini", "pimpao");
+				accountService2.user_login();
 			}
-			
-			private function userClick():void {
-				/*WeightControlModelLocator.getInstance().user = null;
-				var event:AccountEvent = new AccountEvent(AccountEvent.USER);
-				CairngormEventDispatcher.getInstance().dispatchEvent(event);*/
-				accountService2.user();
-			}
-			
+						
 			private function setarClick():void {
 				accountService2.setRemoteCredentials(txtUser.text, txtPass.text);
+				Alert.show("Setado");
+			}
+			
+			private function logoffClick():void {
+				accountService2.user_logout();
 			}
 			
 		]]>
@@ -64,10 +61,10 @@
 	<mx:Canvas>
 		<mx:HBox>
 			<mx:Button label="Login" click="loginClick()"/>
-			<mx:Button label="User" click="userClick()"/>
 			<mx:TextInput id="txtUser" text="gambi_user"/>
 			<mx:TextInput id="txtPass" text="gambi_pass"/>
 			<mx:Button label="Setar" click="setarClick()"/>
+			<mx:Button label="Logoff" click="logoffClick()"/>
 			<mx:Label text="{WeightControlModelLocator.getInstance().user.email}"/>	
 		</mx:HBox>
 	</mx:Canvas>

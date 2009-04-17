@@ -1,12 +1,12 @@
 class AccountController < ApplicationController
 
-  before_filter :authenticate, :except => [:login, :logout, :signup]
+  before_filter :authenticate, :except => [:user_logout, :user_signup]
 
-  def login
+  def user_login
     render :amf => self.current_user
   end
 
-  def signup
+  def user_signup
     @user = User.new(params[:user])
     return unless request.post?
     @user.save!
@@ -17,18 +17,17 @@ class AccountController < ApplicationController
     render :action => 'signup'
   end
     
-  def logout
+  def user_logout
     self.current_user.forget_me if logged_in?
     cookies.delete :auth_token
     reset_session
-    redirect_back_or_default(:controller => '/account', :action => 'index')
+    render :amf => DefaultMessages.OK
   end
   
   protected
   
     def authenticate
       creds = self.credentials
-      puts "CREDS: " + creds.inspect
       if creds[:username]
         self.current_user = User.authenticate(creds[:username], creds[:password])
       end
