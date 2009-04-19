@@ -4,11 +4,13 @@ package org.luchini.weightcontrol.controller.commands
 	import com.adobe.cairngorm.control.CairngormEvent;
 	
 	import mx.rpc.IResponder;
+	import mx.rpc.events.FaultEvent;
 	
 	import org.luchini.weightcontrol.controller.delegates.AccountDelegate;
 	import org.luchini.weightcontrol.events.AccountEvent;
 	import org.luchini.weightcontrol.model.WeightControlModelLocator;
 	import org.luchini.weightcontrol.model.vo.User;
+	import org.luchini.weightcontrol.view.FaultHandler;
 
 	public class UserSignupCommand implements ICommand, IResponder
 	{
@@ -32,6 +34,7 @@ package org.luchini.weightcontrol.controller.commands
 		
 		public function fault(event:Object):void
 		{
+			FaultHandler.getInstance().handle(event as FaultEvent);
 		}
 		
 	}

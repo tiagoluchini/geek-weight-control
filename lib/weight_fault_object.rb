@@ -14,10 +14,11 @@ class WeightFaultObject < FaultObject
     @@INCOMPLETE_DATA => "Incomplete data provided!"
   }
   
-  def initialize(code) 
+  def initialize(code, details = nil) 
     super(@@MSG[code])
     self['faultCode'] = code
     self['code'] = code
+    self['message'] = details if details
   end
   
 end
