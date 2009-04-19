@@ -20,6 +20,9 @@
 			import mx.controls.Alert;
 			import mx.rpc.AsyncToken;
 			
+			[Bindable]
+			private var signUpUser:User = new User();
+			
 			private function loginClick():void {
 				var event:AccountEvent = new AccountEvent(AccountEvent.USER_LOGIN);
 				event.login = txtUser.text;
@@ -32,10 +35,22 @@
 				CairngormEventDispatcher.getInstance().dispatchEvent(event);
 			}
 			
+			private function signupClick():void {
+				var event:AccountEvent = new AccountEvent(AccountEvent.USER_SIGNUP);
+				event.signUpUser = this.signUpUser;
+				CairngormEventDispatcher.getInstance().dispatchEvent(event);
+			}
+			
 		]]>
 	</mx:Script>
+
+	<mx:Binding destination="signUpUser.login" source="loginTxt.text"/>
+	<mx:Binding destination="signUpUser.email" source="emailTxt.text"/>
+	<mx:Binding destination="signUpUser.password" source="passwordTxt.text"/>
+	<mx:Binding destination="signUpUser.passwordConfirmation" source="passwordConfirmationlTxt.text"/>
 	
-	<mx:Canvas>
+	<mx:VBox>
+		
 		<mx:HBox>
 			<mx:TextInput id="txtUser" text=""/>
 			<mx:TextInput id="txtPass" text="" displayAsPassword="true"/>
@@ -43,6 +58,30 @@
 			<mx:Button label="Logout" click="logoutClick()"/>
 			<mx:Label text="{WeightControlModelLocator.getInstance().user.email}"/>	
 		</mx:HBox>
-	</mx:Canvas>
+				
+		<mx:Form>
+			<mx:FormHeading label="Singup user"/>
+			<mx:FormItem label="Login">
+				<mx:TextInput id="loginTxt" text="{signUpUser.login}"/>
+			</mx:FormItem>
+			<mx:FormItem label="Email">
+				<mx:TextInput id="emailTxt" text="{signUpUser.email}"/>
+			</mx:FormItem>
+			<mx:FormItem label="Password">
+				<mx:TextInput id="passwordTxt" text="{signUpUser.password}" displayAsPassword="true"/>
+			</mx:FormItem>
+			<mx:FormItem label="Password Confirmation">
+				<mx:TextInput id="passwordConfirmationlTxt" text="{signUpUser.passwordConfirmation}" displayAsPassword="true"/>
+			</mx:FormItem>
+			<mx:FormItem>
+				<mx:Button label="Signup" click="signupClick()"/>
+			</mx:FormItem>
+		</mx:Form>
+		
+		<mx:HBox>
+			<mx:Label text="{signUpUser.email}"/>
+		</mx:HBox>
+	</mx:VBox>
+		
 	
 </mx:Application>

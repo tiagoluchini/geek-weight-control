@@ -47,7 +47,7 @@ module RubyAMF
           attribs = (obj.attribute_names + ["id"]).inject({}){|hash, attr| hash[attr]=true ; hash}
           mapping = ClassMappings.get_vo_mapping_for_ruby_class(obj.class.name)
           if (!mapping && attribs[key]) || 
-            (mapping && !mapping[:ignore_fields].include?(key) && ClassMappings.attribute_names[mapping[:ruby]][key])                  
+            (mapping && !mapping[:ignore_fields].include?(key) && ClassMappings.attribute_names[mapping[:ruby]][key])
             attributes[key] = value
           #ASSOCIATION
           elsif reflection = obj.class.reflections[key.to_sym] # is it an association

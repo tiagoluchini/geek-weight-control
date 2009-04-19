@@ -2,6 +2,8 @@ package org.luchini.weightcontrol.events
 {
 	import com.adobe.cairngorm.control.CairngormEvent;
 	
+	import org.luchini.weightcontrol.model.vo.User;
+	
 	public class AccountEvent extends CairngormEvent
 	{
 		public static var USER_LOGIN:String = "USER_LOGIN";
@@ -10,6 +12,8 @@ package org.luchini.weightcontrol.events
 		
 		public var login:String;
 		public var password:String;
+		
+		public var signUpUser:User;
 		
 		public function AccountEvent(type:String)
 		{

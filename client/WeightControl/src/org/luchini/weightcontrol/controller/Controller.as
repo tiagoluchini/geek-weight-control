@@ -4,6 +4,7 @@ package org.luchini.weightcontrol.controller
 	
 	import org.luchini.weightcontrol.controller.commands.UserLoginCommand;
 	import org.luchini.weightcontrol.controller.commands.UserLogoutCommand;
+	import org.luchini.weightcontrol.controller.commands.UserSignupCommand;
 	import org.luchini.weightcontrol.events.AccountEvent;
 	
 	public class Controller extends FrontController
@@ -16,6 +17,7 @@ package org.luchini.weightcontrol.controller
 		private function initialiseCommands():void {
 			addCommand(AccountEvent.USER_LOGIN, UserLoginCommand);
 			addCommand(AccountEvent.USER_LOGOUT, UserLogoutCommand);
+			addCommand(AccountEvent.USER_SIGNUP, UserSignupCommand);
 		}
 
 	}

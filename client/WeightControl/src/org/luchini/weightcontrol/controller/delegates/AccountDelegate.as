@@ -6,6 +6,8 @@ package org.luchini.weightcontrol.controller.delegates
 	import mx.rpc.IResponder;
 	import mx.rpc.remoting.RemoteObject;
 	
+	import org.luchini.weightcontrol.model.vo.User;
+	
 	public class AccountDelegate
 	{
 		private var responder:IResponder;
@@ -28,10 +30,10 @@ package org.luchini.weightcontrol.controller.delegates
 			call.addResponder(this.responder);
 		}
 
-		/*public function user_signup(signUpUserVO:SignUpUserVO):void {
-			var call:AsyncToken = this.service.user_signup(signUpUserVO);
+		public function user_signup(signUpUser:User):void {
+			var call:AsyncToken = this.service.user_signup({user: signUpUser});
 			call.addResponder(this.responder);
-		}*/
+		}
 
 	}
 }

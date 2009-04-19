@@ -9,6 +9,8 @@ package org.luchini.weightcontrol.model.vo
 		public var id:int;
 		public var login:String;
 		public var email:String;
+		public var password:String;
+		public var passwordConfirmation:String;
 		public var createdAt:Date;
 		public var updatedAt:Date;
 		

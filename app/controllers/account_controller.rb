@@ -7,14 +7,16 @@ class AccountController < ApplicationController
   end
 
   def user_signup
-    @user = User.new(params[:user])
-    return unless request.post?
-    @user.save!
-    self.current_user = @user
-    redirect_back_or_default(:controller => '/account', :action => 'index')
-    flash[:notice] = "Thanks for signing up!"
+puts "PARAMS: " + params.inspect
+#    @user = User.new(params[:user])
+puts "USER: " + params[:user].inspect
+    #return unless request.post?
+    #@user.save!
+    #self.current_user = @user
+    #render :amf => self.current_user
   rescue ActiveRecord::RecordInvalid
-    render :action => 'signup'
+    #puts "ERROR: " + 
+    render :amf => WeightFaultObject.new(WeightFaultObject.INCOMPLETE_DATA)
   end
     
   def user_logout
