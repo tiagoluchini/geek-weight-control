@@ -7,9 +7,10 @@ class AccountController < ApplicationController
   end
 
   def user_signup
-puts "PARAMS: " + params.inspect
+puts ">>> PARAMS: " + params.inspect
+#puts ">>> RUBYAMF_PARAMS: " + rubyamf_params.inspect
 #    @user = User.new(params[:user])
-puts "USER: " + params[:user].inspect
+#puts ">>> USER: " + params[:user].inspect
     #return unless request.post?
     #@user.save!
     #self.current_user = @user
