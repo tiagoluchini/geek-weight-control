@@ -30,7 +30,7 @@ package org.luchini.weightcontrol.controller.delegates
 			call.addResponder(this.responder);
 		}
 
-		public function user_signup(signUpUser:User):void {
+		public function user_signup(signUpUser:Object):void {
 			var call:AsyncToken = this.service.user_signup({user: signUpUser});
 			call.addResponder(this.responder);
 		}

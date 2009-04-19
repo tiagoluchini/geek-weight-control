@@ -13,7 +13,7 @@ package org.luchini.weightcontrol.events
 		public var login:String;
 		public var password:String;
 		
-		public var signUpUser:User;
+		public var signUpUser:Object;
 		
 		public function AccountEvent(type:String)
 		{

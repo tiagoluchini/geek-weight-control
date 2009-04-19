@@ -7,6 +7,8 @@ package org.luchini.weightcontrol.controller.commands
 	
 	import org.luchini.weightcontrol.controller.delegates.AccountDelegate;
 	import org.luchini.weightcontrol.events.AccountEvent;
+	import org.luchini.weightcontrol.model.WeightControlModelLocator;
+	import org.luchini.weightcontrol.model.vo.User;
 
 	public class UserSignupCommand implements ICommand, IResponder
 	{
@@ -21,11 +23,13 @@ package org.luchini.weightcontrol.controller.commands
 			delegate.user_signup(accountEvent.signUpUser);
 		}
 		
-		public function result(data:Object):void
+		public function result(event:Object):void
 		{
+			var model:WeightControlModelLocator = WeightControlModelLocator.getInstance();
+        	model.user = event.result as User;
 		}
 		
-		public function fault(info:Object):void
+		public function fault(event:Object):void
 		{
 		}
 		

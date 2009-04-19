@@ -8,13 +8,13 @@ class AccountController < ApplicationController
 
   def user_signup
 puts ">>> PARAMS: " + params.inspect
-#puts ">>> RUBYAMF_PARAMS: " + rubyamf_params.inspect
-#    @user = User.new(params[:user])
-#puts ">>> USER: " + params[:user].inspect
+puts ">>> RUBYAMF_PARAMS: " + rubyamf_params.inspect
+    @user = User.new(params[:user])
+puts ">>> @USER: " + @user.inspect
     #return unless request.post?
-    #@user.save!
-    #self.current_user = @user
-    #render :amf => self.current_user
+    @user.save!
+    self.current_user = @user
+    render :amf => self.current_user
   rescue ActiveRecord::RecordInvalid
     #puts "ERROR: " + 
     render :amf => WeightFaultObject.new(WeightFaultObject.INCOMPLETE_DATA)

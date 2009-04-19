@@ -8,6 +8,15 @@
 	<services:Services id="services"/>
 	<controller:Controller id="controller"/>
 
+	<mx:Model id="user">
+		<user>
+			<login>{loginTxt.text}</login>
+			<email>{emailTxt.text}</email>
+			<password>{passwordTxt.text}</password>
+			<password_confirmation>{passwordConfirmationTxt.text}</password_confirmation>
+		</user>
+	</mx:Model>
+
 	<mx:Script>
 		<![CDATA[
 			import mx.rpc.events.FaultEvent;
@@ -19,10 +28,7 @@
 			import mx.rpc.events.ResultEvent;
 			import mx.controls.Alert;
 			import mx.rpc.AsyncToken;
-			
-			[Bindable]
-			private var signUpUser:User = new User();
-			
+						
 			private function loginClick():void {
 				var event:AccountEvent = new AccountEvent(AccountEvent.USER_LOGIN);
 				event.login = txtUser.text;
@@ -37,18 +43,13 @@
 			
 			private function signupClick():void {
 				var event:AccountEvent = new AccountEvent(AccountEvent.USER_SIGNUP);
-				event.signUpUser = this.signUpUser;
+				event.signUpUser = user;
 				CairngormEventDispatcher.getInstance().dispatchEvent(event);
 			}
 			
 		]]>
 	</mx:Script>
 
-	<mx:Binding destination="signUpUser.login" source="loginTxt.text"/>
-	<mx:Binding destination="signUpUser.email" source="emailTxt.text"/>
-	<mx:Binding destination="signUpUser.password" source="passwordTxt.text"/>
-	<mx:Binding destination="signUpUser.passwordConfirmation" source="passwordConfirmationlTxt.text"/>
-	
 	<mx:VBox>
 		
 		<mx:HBox>
@@ -62,25 +63,22 @@
 		<mx:Form>
 			<mx:FormHeading label="Singup user"/>
 			<mx:FormItem label="Login">
-				<mx:TextInput id="loginTxt" text="{signUpUser.login}"/>
+				<mx:TextInput id="loginTxt"/>
 			</mx:FormItem>
 			<mx:FormItem label="Email">
-				<mx:TextInput id="emailTxt" text="{signUpUser.email}"/>
+				<mx:TextInput id="emailTxt"/>
 			</mx:FormItem>
 			<mx:FormItem label="Password">
-				<mx:TextInput id="passwordTxt" text="{signUpUser.password}" displayAsPassword="true"/>
+				<mx:TextInput id="passwordTxt" displayAsPassword="true"/>
 			</mx:FormItem>
 			<mx:FormItem label="Password Confirmation">
-				<mx:TextInput id="passwordConfirmationlTxt" text="{signUpUser.passwordConfirmation}" displayAsPassword="true"/>
+				<mx:TextInput id="passwordConfirmationTxt" displayAsPassword="true"/>
 			</mx:FormItem>
 			<mx:FormItem>
 				<mx:Button label="Signup" click="signupClick()"/>
 			</mx:FormItem>
 		</mx:Form>
 		
-		<mx:HBox>
-			<mx:Label text="{signUpUser.email}"/>
-		</mx:HBox>
 	</mx:VBox>
 		
 	
