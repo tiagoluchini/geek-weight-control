@@ -27,7 +27,7 @@ package org.luchini.weightcontrol.view
 			return myInstance;
 		}
 
-		public function handle(event:FaultEvent) {
+		public function handle(event:FaultEvent):void {
 			var fault:Fault = event.fault;
 			Alert.show(fault.faultString, "Fault!");
 		}

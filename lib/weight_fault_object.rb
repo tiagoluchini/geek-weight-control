@@ -15,10 +15,8 @@ class WeightFaultObject < FaultObject
   }
   
   def initialize(code, details = nil) 
-    super(@@MSG[code])
+    super(@@MSG[code], details, nil)
     self['faultCode'] = code
-    self['code'] = code
-    self['message'] = details if details
   end
   
 end

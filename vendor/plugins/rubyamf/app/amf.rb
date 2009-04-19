@@ -228,7 +228,7 @@ class ASFault < VoHash
     
     self["code"] = e.etype.to_s #e.type.to_s
     self["description"] = e.message
-    self["details"] = backtrace[0]
+    self["details"] = (e.details) ? e.details : backtrace[0]
     self["level"] = 'UserError'
     self["class_file"] = classm.to_s
     self["line"] = line
@@ -249,7 +249,7 @@ class AS3Fault < VoHash
     self._explicitType = 'flex.messaging.messages.ErrorMessage'
     self["faultCode"] = e.etype.to_s #e.type.to_s
     self["faultString"] = e.message
-    self["faultDetail"] = backtrace
+    self["faultDetail"] = (e.details) ? e.details : backtrace
     self["rootCause"] = backtrace[0]
     self["extendedData"] = e.payload || backtrace
   end

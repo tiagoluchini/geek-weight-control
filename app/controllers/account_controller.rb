@@ -13,7 +13,7 @@ class AccountController < ApplicationController
     render :amf => self.current_user
   rescue ActiveRecord::RecordInvalid
     puts "ERROR: " + @user.errors.inspect
-    render :amf => WeightFaultObject.new(WeightFaultObject.INCOMPLETE_DATA, "dados aqui")
+    render :amf => WeightFaultObject.new(WeightFaultObject.INCOMPLETE_DATA, @user.errors.to_a)
   end
     
   def user_logout
