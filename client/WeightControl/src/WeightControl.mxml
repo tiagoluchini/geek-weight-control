@@ -57,7 +57,7 @@
 			<mx:TextInput id="txtPass" text="" displayAsPassword="true"/>
 			<mx:Button label="Login" click="loginClick()"/>		
 			<mx:Button label="Logout" click="logoutClick()"/>
-			<mx:Label text="{WeightControlModelLocator.getInstance().user.email}"/>	
+			<mx:Label text="State: {WeightControlModelLocator.getInstance().currentState} {WeightControlModelLocator.getInstance().user.email}"/>	
 		</mx:HBox>
 				
 		<mx:Form>

@@ -27,6 +27,7 @@ package org.luchini.weightcontrol.controller.commands
 		{
 			var model:WeightControlModelLocator = WeightControlModelLocator.getInstance();
         	model.user = event.result as User;
+        	model.currentState = WeightControlModelLocator.STATE_LOGGED_IN;
 		}
 		
 		public function fault(event:Object):void

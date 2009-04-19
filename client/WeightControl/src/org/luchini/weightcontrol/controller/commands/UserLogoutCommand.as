@@ -7,6 +7,7 @@ package org.luchini.weightcontrol.controller.commands
 	import mx.rpc.IResponder;
 	
 	import org.luchini.weightcontrol.controller.delegates.AccountDelegate;
+	import org.luchini.weightcontrol.model.WeightControlModelLocator;
 
 	public class UserLogoutCommand implements ICommand, IResponder
 	{
@@ -22,7 +23,9 @@ package org.luchini.weightcontrol.controller.commands
 		
 		public function result(data:Object):void
 		{
-			//TODO: set current logged in state if "OK"
+			var model:WeightControlModelLocator = WeightControlModelLocator.getInstance();
+			model.user = null;
+			model.currentState = WeightControlModelLocator.STATE_LOGGED_OUT;
 		}
 		
 		public function fault(info:Object):void
