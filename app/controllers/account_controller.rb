@@ -12,7 +12,6 @@ class AccountController < ApplicationController
     self.current_user = @user
     render :amf => self.current_user
   rescue ActiveRecord::RecordInvalid
-    puts "ERROR: " + @user.errors.inspect
     render :amf => WeightFaultObject.new(WeightFaultObject.INCOMPLETE_DATA, @user.errors.to_a)
   end
     
