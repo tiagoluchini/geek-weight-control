@@ -56,7 +56,6 @@ class RUBYAMFException < Exception
   attr_accessor :etype
   attr_accessor :ebacktrace
   attr_accessor :payload
-  attr_accessor :details
   
   #static accessors
   class << self
@@ -81,11 +80,10 @@ class RUBYAMFException < Exception
     attr_accessor :PARAMETER_MAPPING_ERROR
   end
   
-  def initialize(type, msg, details)
+  def initialize(type,msg)
     super(msg)
     @message = msg
     @etype = type
-    @details = details
   end
   
   # stringify the message

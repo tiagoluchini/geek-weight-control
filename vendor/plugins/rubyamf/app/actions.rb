@@ -147,7 +147,7 @@ module RubyAMF
         
         #handle FaultObjects
         if result.is_a?FaultObject #catch returned FaultObjects - use this check so we don't have to include the fault object module
-          e = RUBYAMFException.new(result['faultCode'], result['faultString'], result['details'])
+          e = RUBYAMFException.new(result['code'], result['message'])
           e.payload = result['payload']
           raise e
         end
