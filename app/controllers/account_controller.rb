@@ -1,7 +1,5 @@
 class AccountController < ApplicationController
 
-  before_filter :authenticate, :except => [:user_logout, :user_signup]
-
   def user_login
     render :amf => self.current_user
   end
@@ -21,20 +19,5 @@ class AccountController < ApplicationController
     reset_session
     render :amf => DefaultMessages.OK
   end
-  
-  protected
-  
-    def authenticate
-      creds = self.credentials
-      if creds[:username]
-        self.current_user = User.authenticate(creds[:username], creds[:password])
-      end
-      if logged_in?
-        return true
-      else
-        render :amf => WeightFaultObject.new(WeightFaultObject.INVALID_LOGIN)
-        return false
-      end
-    end
 
 end

@@ -11,6 +11,23 @@ class ApplicationController < ActionController::Base
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
   # If you want "remember me" functionality, add this before_filter to Application Controller
-  before_filter :login_from_cookie
+  # before_filter :login_from_cookie
+  
+  before_filter :authenticate, :except => [:user_logout, :user_signup]
+  
+protected
+  
+  def authenticate
+    creds = self.credentials
+    if creds[:username]
+      self.current_user = User.authenticate(creds[:username], creds[:password])
+    end
+    if logged_in?
+      return true
+    else
+      render :amf => WeightFaultObject.new(WeightFaultObject.INVALID_LOGIN)
+      return false
+    end
+  end
   
 end
